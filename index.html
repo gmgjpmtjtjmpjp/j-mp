@@ -1,0 +1,13 @@
+// src/App.jsx import React, { useState, useRef } from "react"; import DesktopXP from "./DesktopXP.jsx"; import xpLoginImage from "./xp-login.jpg"; // XPログイン画面画像 import xpSound from "./xp-startup.mp3"; // XP起動音
+
+export default function App() { const [loggedIn, setLoggedIn] = useState(false); const [password, setPassword] = useState(""); const [error, setError] = useState(""); const audioRef = useRef(null);
+
+const handleLogin = () => { if (password === "7777") { audioRef.current.play(); setTimeout(() => setLoggedIn(true), 2000); } else { setError("パスワードが違います"); } };
+
+if (loggedIn) return <DesktopXP />;
+
+return ( <div className="w-full h-screen flex flex-col items-center justify-center bg-cover bg-center" style={{ backgroundImage: url(${xpLoginImage}) }} > <div className="bg-white/80 p-6 rounded-md shadow-md text-center"> <h1 className="text-xl font-bold mb-4">ユーザー名: User</h1> <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="border px-3 py-2 rounded w-48 mb-3" placeholder="パスワードを入力" /> <div> <button
+onClick={handleLogin}
+className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+> ログイン </button> </div> {error && <div className="text-red-600 mt-2">{error}</div>} </div> <audio ref={audioRef} src={xpSound} /> </div> ); }
+
