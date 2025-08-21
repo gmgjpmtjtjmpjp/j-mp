@@ -1,0 +1,42 @@
+// GitHub Pages 用 完全 XP風デスクトップ + ログイン画面 React プロジェクト
+
+// package.json { "name": "xp-desktop", "private": true, "version": "0.0.0", "type": "module", "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview" }, "dependencies": { "react": "^18.2.0", "react-dom": "^18.2.0" }, "devDependencies": { "@vitejs/plugin-react": "^4.0.0", "autoprefixer": "^10.4.0", "postcss": "^8.4.0", "tailwindcss": "^3.3.0", "vite": "^4.0.0" } }
+
+// vite.config.js import { defineConfig } from "vite"; import react from "@vitejs/plugin-react";
+
+export default defineConfig({ base: "/xp-desktop/", plugins: [react()], });
+
+// tailwind.config.js export default { content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"], theme: { extend: {} }, plugins: [], };
+
+// index.html
+
+<!DOCTYPE html><html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows XP風 Webデスクトップ</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.jsx"></script>
+  </body>
+</html>// src/main.jsx import React from 'react'; import ReactDOM from 'react-dom/client'; import App from './App.jsx'; import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')).render( <React.StrictMode> <App /> </React.StrictMode> );
+
+// src/App.jsx import React, { useState, useRef, useEffect, useMemo, useRef } from "react"; import xpLoginImage from "./xp-login.jpg"; // XPログイン画面画像 import xpSound from "./xp-startup.mp3"; // XP起動音
+
+// --- XP風カラー --- const XP = { taskbarBlueFrom: "#1b56d6", taskbarBlueTo: "#2a6adf", titlebarActiveFrom: "#3180f9", titlebarActiveTo: "#0b53d6", titlebarInactiveFrom: "#d9e6ff", titlebarInactiveTo: "#b7cdf6", taskbarBorder: "#0d2a7a", menuBg: "#fffbe6", menuBlue: "#2a6adf", desktopFrom: "#2b9ad6", desktopTo: "#79c25a" };
+
+// --- useDragフック --- function useDrag(initial = { x: 60, y: 60 }) { /* 前回コードと同じ */ }
+
+// --- XpWindow / StartMenu / Taskbar / DesktopIcon / AppNotepad / AppExplorer / DesktopXP --- // 前回のReactコードを丸ごとコピー
+
+export default function App() { const [loggedIn, setLoggedIn] = useState(false); const [password, setPassword] = useState(""); const [error, setError] = useState(""); const audioRef = useRef(null);
+
+const handleLogin = () => { if (password === "7777") { audioRef.current.play(); setTimeout(() => setLoggedIn(true), 2000); } else { setError("パスワードが違います"); } };
+
+if (loggedIn) return <DesktopXP />;
+
+return ( <div className="w-full h-screen flex flex-col items-center justify-center bg-cover bg-center" style={{ backgroundImage: url(${xpLoginImage}) }}> <div className="bg-white/80 p-6 rounded-md shadow-md text-center"> <h1 className="text-xl font-bold mb-4">ユーザー名: User</h1> <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="border px-3 py-2 rounded w-48 mb-3" placeholder="パスワードを入力" /> <div> <button onClick={handleLogin} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ログイン</button> </div> {error && <div className="text-red-600 mt-2">{error}</div>} </div> <audio ref={audioRef} src={xpSound} /> </div> ); }
+
